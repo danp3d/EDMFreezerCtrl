@@ -1,0 +1,42 @@
+#ifndef EDMFreezerCtrl_h
+#define EDMFreezerCtrl_h
+
+#include <EDMTempSensor.h>
+#include <EDMRelay.h>
+#import <inttypes.h>
+
+class EDMFreezerCtrl {
+private:
+	EDMTempSensor* _tempSensor;
+	EDMRelay* _relay;
+	float _minTemp = 0;
+	float _maxTemp = 4;
+	
+	// Timers	
+	unsigned long _ONTimerStart = 0;
+	unsigned long _ONTimerStop = 0;
+	unsigned long _OFFTimerStart = 0;
+	unsigned long _OFFTimerStop = 0;
+public:
+	EDMFreezerCtrl(uint8_t tempSensorPin, uint8_t relayPin);
+	~EDMFreezerCtrl();
+
+	void process();
+	void setTempLimits(float minTemp, float maxTemp);
+
+	float getMinTemp() { return _minTemp; }
+	float getMaxTemp() { return _maxTemp; }
+
+	void startONTimer();
+	void stopONTimer();
+	void startOFFTimer();
+	void stopOFFTimer();
+
+	unsigned long getSecondsON();
+	unsigned long getSecondsOFF();
+	
+	EDMTempSensor* getTempSensor() { return _tempSensor; }
+	EDMRelay* getRelay() { return _relay; }
+};
+
+#endif
